@@ -19,7 +19,7 @@ app.use("/api/login", loginRoute);
 app.use("/api/book", bookingRoute);
 
 const job = () => {
-  const scheduledJob = schedule.scheduleJob("*/5 * * * *", () => {
+  const scheduledJob = schedule.scheduleJob("* * * * *", () => {
     scheduleEmailNotificationsForBookings();
   });
 };
