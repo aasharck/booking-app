@@ -24,7 +24,7 @@ const BookingItem = ({ id, doctor, date, time, deleting, setDeleting }) => {
       const res = await axios.delete(`http://localhost:3000/api/book/${id}`, {headers});
       
       toast({
-        description: "Canceled Successfully!"
+        description: res.data.message
       })
       setOpen(false);
     } catch (error) {

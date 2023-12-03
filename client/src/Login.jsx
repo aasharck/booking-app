@@ -30,12 +30,10 @@ const Login = () => {
       })
       window.location = '/'
     } catch (error) {
-      if(error.response && error.response.status >=400 && error.response.status <= 500){
         toast({
           variant: "destructive",
           description: error.response.data.message,
         })
-      }
     }finally{
       setLoading(false)
     }
