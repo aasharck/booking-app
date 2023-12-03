@@ -9,7 +9,6 @@ const scheduleEmailNotificationsForBookings = async () => {
     );
 
     const currentTimeStamp = Date.now();
-    const userTimezoneOffset = new Date().getTimezoneOffset() * 60000;
 
     bookings.forEach(async (booking) => {
       const {
@@ -19,17 +18,18 @@ const scheduleEmailNotificationsForBookings = async () => {
         user: { email },
       } = booking;
 
-      const [hours, minutes] = time.split(":").map(Number);
-      const dateTime = new Date(date);
+      const storedDate = new Date(date);
 
-      dateTime.setUTCHours(hours);
-      dateTime.setUTCMinutes(minutes);
+      const localDate = new Date(storedDate.getTime() - storedDate.getTimezoneOffset() * 60000);
 
-      const bookingTimeStamp = dateTime.getTime() + userTimezoneOffset;
+      const [hours, minutes] = time.split(':').map(Number);
+      const updatedDate = new Date(localDate);
+      updatedDate.setDate(updatedDate.getDate() - 1);
+      updatedDate.setHours(hours, minutes);
+
+      const bookingTimeStamp = updatedDate.getTime();
 
       if (currentTimeStamp >= bookingTimeStamp) {
-        console.log("currentTimeStamp", currentTimeStamp)
-        console.log("bookingTimeStamp", bookingTimeStamp)
         await sendEmailNotification(email, date, time, _id);
       }
     });
